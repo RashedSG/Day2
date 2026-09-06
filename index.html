@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>تقييم أهلية القرض الصغير</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --white:#ffffff;
+    --grey:#f5f5f7;
+    --ink:#1d1d1f;
+    --sub:#6e6e73;
+    --line:#d2d2d7;
+    --blue:#0071e3;
+    --green:#008009;
+    --orange:#b25000;
+    --red:#c8102e;
+    --purple:#5e5ce6;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--white);
+    color:var(--ink);
+    font-family:"SF Arabic","SF Pro Display",-apple-system,BlinkMacSystemFont,"Noto Sans Arabic","Helvetica Neue",sans-serif;
+    font-size:17px;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  .container{max-width:980px;margin:0 auto;padding:0 22px;}
+  .narrow{max-width:700px;margin:0 auto;}
+  .nav{
+    position:fixed;inset-block-start:0;inset-inline:0;z-index:50;
+    height:48px;display:flex;align-items:center;
+    background:rgba(255,255,255,.72);
+    backdrop-filter:saturate(180%) blur(20px);
+    -webkit-backdrop-filter:saturate(180%) blur(20px);
+    border-bottom:1px solid rgba(0,0,0,.08);
+  }
+  .nav .container{display:flex;align-items:center;justify-content:space-between;width:100%;}
+  .nav-brand{font-size:15px;font-weight:600;}
+  .nav-links{display:flex;gap:26px;}
+  .nav-links a{color:var(--ink);opacity:.8;text-decoration:none;font-size:13px;}
+  .nav-links a:hover{opacity:1;}
+  @media (max-width:600px){ .nav-links{gap:18px;} }
+  .hero{padding:150px 0 96px;text-align:center;}
+  .hero h1{font-size:clamp(40px,8vw,80px);font-weight:600;letter-spacing:-.022em;line-height:1.05;margin:0 0 20px;}
+  .hero p{font-size:clamp(19px,2.4vw,25px);color:var(--sub);max-width:36ch;margin:0 auto 26px;line-height:1.42;}
+  .hero-links{display:flex;gap:28px;justify-content:center;flex-wrap:wrap;}
+  .link{color:var(--blue);text-decoration:none;font-size:19px;}
+  .link:hover{text-decoration:underline;}
+  section{padding:96px 0;}
+  .bg-grey{background:var(--grey);}
+  .section-head{text-align:center;margin-bottom:52px;}
+  .section-head h2{font-size:clamp(30px,4.6vw,48px);font-weight:600;letter-spacing:-.02em;line-height:1.1;margin:0 0 14px;}
+  .section-head p{color:var(--sub);font-size:19px;margin:0 auto;max-width:46ch;}
+  .fact{display:flex;align-items:center;justify-content:space-between;gap:26px;padding:26px 0;border-bottom:1px solid var(--line);}
+  .fact:last-child{border-bottom:0;}
+  .fact-q{font-size:21px;font-weight:500;letter-spacing:-.01em;}
+  .fact-note{display:block;font-size:14px;color:var(--sub);font-weight:400;margin-top:4px;}
+  @media (max-width:640px){ .fact{flex-direction:column;align-items:stretch;gap:16px;} .fact-q{font-size:19px;} }
+  .seg{flex:none;display:flex;gap:2px;padding:2px;background:#e9e9ec;border-radius:980px;}
+  .seg button{font:inherit;font-size:16px;font-weight:500;min-width:78px;padding:8px 18px;border:0;border-radius:980px;background:transparent;color:var(--ink);cursor:pointer;transition:background .18s ease,box-shadow .18s ease;}
+  .seg button[aria-checked="true"]{background:var(--white);box-shadow:0 1px 3px rgba(0,0,0,.12);}
+  @media (max-width:640px){ .seg button{flex:1;} }
+  .meter{margin-top:38px;text-align:center;}
+  .meter-track{height:4px;background:#e0e0e4;border-radius:99px;overflow:hidden;max-width:320px;margin:0 auto 14px;}
+  .meter-fill{height:100%;width:0;background:var(--blue);border-radius:99px;transition:width .3s ease;}
+  .meter-label{font-size:14px;color:var(--sub);}
+  .cta{text-align:center;margin-top:34px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+  .btn{font:inherit;font-size:17px;border:0;border-radius:980px;padding:13px 26px;cursor:pointer;background:var(--blue);color:#fff;transition:background .18s ease;}
+  .btn:hover{background:#0077ED;}
+  .btn:disabled{background:#e8e8ed;color:#b0b0b8;cursor:not-allowed;}
+  .btn-plain{background:transparent;color:var(--blue);padding:13px 10px;}
+  .btn-plain:hover{background:transparent;text-decoration:underline;}
+  :focus-visible{outline:4px solid rgba(0,113,227,.6);outline-offset:3px;border-radius:8px;}
+  #decision{display:none;padding-top:120px;}
+  #decision.on{display:block;}
+  .result{background:var(--grey);border-radius:28px;padding:44px 36px 36px;}
+  @media (max-width:640px){ .result{padding:32px 20px 24px;border-radius:22px;} }
+  .badge{display:inline-block;font-size:13px;font-weight:600;padding:6px 14px;border-radius:980px;margin-bottom:18px;background:rgba(0,0,0,.06);letter-spacing:.01em;}
+  .badge.approve{color:var(--green);background:rgba(0,128,9,.12);}
+  .badge.conditional{color:var(--orange);background:rgba(178,80,0,.12);}
+  .badge.reject{color:var(--red);background:rgba(200,16,46,.12);}
+  .badge.review{color:var(--purple);background:rgba(94,92,230,.12);}
+  .verdict{text-align:center;}
+  .verdict h2{font-size:clamp(30px,5.4vw,52px);font-weight:600;letter-spacing:-.022em;line-height:1.12;margin:0 0 14px;}
+  .verdict .lede{font-size:19px;color:var(--sub);max-width:38ch;margin:0 auto;line-height:1.5;}
+  .amount-card{margin:36px auto 0;max-width:420px;text-align:center;background:var(--white);border-radius:22px;padding:28px 24px 24px;}
+  .amount-card .label{font-size:13px;color:var(--sub);font-weight:500;margin-bottom:8px;}
+  .amount-card .value{font-size:clamp(32px,6vw,48px);font-weight:600;letter-spacing:-.03em;line-height:1.1;color:var(--ink);}
+  #decision.status-approve .amount-card .value{color:var(--green);}
+  #decision.status-conditional .amount-card .value{color:var(--orange);}
+  #decision.status-reject .amount-card .value{color:var(--red);}
+  #decision.status-review .amount-card .value{color:var(--purple);}
+  .detail-grid{display:grid;grid-template-columns:1fr;gap:14px;margin-top:18px;}
+  .panel{background:var(--white);border-radius:20px;padding:22px 24px 24px;}
+  .panel h3{font-size:13px;font-weight:600;margin:0 0 10px;color:var(--sub);letter-spacing:.01em;}
+  .panel p{color:var(--ink);font-size:17px;margin:0;line-height:1.6;}
+  .basis-wrap{margin-top:18px;}
+  .basis-wrap h3{font-size:13px;font-weight:600;margin:0 0 12px;color:var(--sub);letter-spacing:.01em;text-align:center;}
+  .basis{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;}
+  .pill{font-size:14px;padding:7px 13px;border-radius:980px;background:var(--white);border:1px solid var(--line);color:var(--ink);}
+  .pill b{font-weight:600;}
+  .pill.y{background:rgba(0,128,9,.08);border-color:transparent;}
+  .pill.n{background:rgba(200,16,46,.08);border-color:transparent;}
+  .pill.y b{color:var(--green);}
+  .pill.n b{color:var(--red);}
+  .result-actions{text-align:center;margin-top:22px;}
+  footer{background:var(--grey);padding:34px 0;border-top:1px solid var(--line);}
+  footer p{margin:0;color:var(--sub);font-size:13px;line-height:1.7;max-width:76ch;}
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease;}
+  .reveal.in{opacity:1;transform:none;}
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto;}
+    .reveal{opacity:1;transform:none;transition:none;}
+    *{transition:none !important;}
+  }
+</style>
+</head>
+<body>
+<nav class="nav">
+  <div class="container">
+    <span class="nav-brand">تقييم الأهلية</span>
+    <div class="nav-links">
+      <a href="#questions">الأسئلة</a>
+      <a href="#questions">ابدأ التقييم</a>
+    </div>
+  </div>
+</nav>
+<header class="hero">
+  <div class="container">
+    <h1>تحقق من أهليتك<br>في دقيقة واحدة.</h1>
+    <p>ستة أسئلة بنعم أو لا، ثم قرار فوري بناءً على إجاباتك.</p>
+    <div class="hero-links">
+      <a class="link" href="#questions">ابدأ التقييم</a>
+    </div>
+  </div>
+</header>
+<section id="questions" class="bg-grey">
+  <div class="container">
+    <div class="section-head reveal">
+      <h2>أجب بنعم أو لا.</h2>
+      <p>كل إجابة حقيقة يستند إليها النظام، ويمكنك تعديلها وإعادة التقييم في أي وقت.</p>
+    </div>
+    <div class="narrow">
+      <div id="facts"></div>
+      <div class="meter">
+        <div class="meter-track"><div class="meter-fill" id="bar"></div></div>
+        <span class="meter-label" id="counter">٠ من ٦ أسئلة</span>
+      </div>
+      <div class="cta">
+        <button class="btn" id="run" disabled>قيّم الطلب</button>
+        <button class="btn btn-plain" id="reset">ابدأ من جديد</button>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="decision">
+  <div class="container narrow">
+    <div class="result">
+      <div class="verdict">
+        <span class="badge" id="badge"></span>
+        <h2 id="verdict-title"></h2>
+        <p class="lede" id="verdict-lede"></p>
+      </div>
+      <div class="amount-card">
+        <div class="label">سقف التمويل</div>
+        <div class="value" id="fig-amount"></div>
+      </div>
+      <div class="detail-grid">
+        <div class="panel"><h3>سبب القرار</h3><p id="why-text"></p></div>
+        <div class="panel"><h3>الخطوة التالية</h3><p id="next-text"></p></div>
+      </div>
+      <div class="basis-wrap">
+        <h3>الإجابات المعتمدة</h3>
+        <div class="basis" id="basis"></div>
+      </div>
+      <div class="result-actions">
+        <button class="btn btn-plain" type="button" id="edit-answers">تعديل الإجابات</button>
+      </div>
+    </div>
+  </div>
+</section>
+<footer>
+  <div class="container">
+    <p>نموذج تعليمي يوضح طريقة عمل الأنظمة الخبيرة القائمة على القواعد. الحدود وسقوف التمويل افتراضية، والنتيجة ليست قرارًا ائتمانيًا ولا تغني عن دراسة الجهة الممولة.</p>
+  </div>
+</footer>
+<script src="app.js"></script>
+</body>
+</html>
